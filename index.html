@@ -1,315 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SyncroGrid | Automatic Timetable Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SyncroGrid | Automatic Timetable Generator</title>
 
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        /* Navigation */
-        nav {
-            background: #ffffff;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+<style>
+*{box-sizing:border-box;}
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:#f0f2f5;
+    color:#333;
+}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #3498db;
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
+/* NAV */
+nav{
+    background:#fff;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+.logo{
+    font-size:1.5rem;
+    font-weight:700;
+    color:#3498db;
+    text-decoration:none;
+}
+.nav-links a{
+    margin-left:25px;
+    text-decoration:none;
+    font-weight:600;
+    color:#2c3e50;
+}
+.nav-links a:hover{color:#3498db;}
 
-        .nav-links a {
-            color: #2c3e50;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
+/* SECTIONS */
+section{display:none;padding:60px 20px;}
+section:target{display:block;}
+#home{display:block;padding-top:0;}
 
-        .nav-links a:hover {
-            color: #3498db;
-        }
+/* HERO */
+.hero{
+    height:450px;
+    background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+    url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1200&q=80');
+    background-size:cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+}
 
-        /* Section Handling */
-        section {
-            display: none;
-            padding: 60px 20px;
-            animation: fadeIn 0.5s ease-in;
-        }
+/* CARD */
+.card{
+    background:white;
+    padding:40px;
+    max-width:1000px;
+    margin:auto;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
 
-        section:target {
-            display: block;
-        }
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+th,td{
+    padding:15px;
+    border:1px solid #eee;
+    text-align:center;
+}
+th{
+    background:#3498db;
+    color:white;
+}
+tr:nth-child(even){background:#f9f9f9;}
 
-        #home {
-            display: block;
-            padding-top: 0;
-        }
+/* EDIT MODE */
+.editable{
+    background:#fff7e6 !important;
+    outline:2px dashed #f39c12;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* BUTTON */
+#editBtn{
+    margin-top:15px;
+    padding:10px 25px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-weight:600;
+    cursor:pointer;
+}
+#editBtn:hover{background:#2c80b4;}
 
-        /* Hero Image & Home Content */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 450px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-
-        .hero-text h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-        }
-
-        .hero-text p {
-            font-size: 1.2rem;
-            font-weight: 300;
-            color: #dcdde1;
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            padding: 40px;
-            max-width: 1000px;
-            margin: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
-            align-items: center;
-        }
-
-        .feature-img {
-            width: 100%;
-            border-radius: 12px;
-            height: 300px;
-            object-fit: cover;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Table Styling */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-        }
-
-        th, td {
-            padding: 15px;
-            border: 1px solid #eee;
-            text-align: center;
-        }
-
-        th {
-            background: #3498db;
-            color: white;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        /* Footer */
-        footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 40px;
-            margin-top: 50px;
-        }
-    </style>
+footer{
+    background:#2c3e50;
+    color:white;
+    text-align:center;
+    padding:40px;
+    margin-top:50px;
+}
+</style>
 </head>
+
 <body>
 
 <nav>
-    <a href="#home" class="logo">SyncroGrid</a>
-    <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#timetable">Timetable</a>
-        <a href="#contact">Contact</a>
-    </div>
+<a href="#home" class="logo">SyncroGrid</a>
+<div class="nav-links">
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#timetable">Timetable</a>
+<a href="#contact">Contact</a>
+</div>
 </nav>
 
 <section id="home">
-    <div class="hero">
-        <div class="hero-text">
-            <h1>SyncroGrid</h1>
-            <p>The next generation of academic scheduling.</p>
-        </div>
-    </div>
-    <div class="card">
-        <h2 style="text-align: center; color: #2c3e50;">Precision Planning Made Simple</h2>
-        <p style="text-align: center; max-width: 750px; margin: auto; font-size: 1.1rem; color: #636e72;">
-            Ditch the manual effort. <strong>SyncroGrid</strong> is an intelligent scheduling interface 
-            designed to harmonize your academic life. Whether you are a student or an educator, 
-            we provide the structure so you can focus on the results.
-        </p>
-        
-        <div class="feature-grid">
-            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" alt="Planning" class="feature-img">
-            <div>
-                <h3 style="color: #3498db;">Why Choose SyncroGrid?</h3>
-                <ul style="padding-left: 20px; color: #2d3436;">
-                    <li><strong>Dynamic Alignment:</strong> A layout that fits your screen and your life.</li>
-                    <li><strong>Visual Clarity:</strong> High-contrast grids for error-free reading.</li>
-                    <li><strong>Modern Standards:</strong> Built using clean, efficient frontend architecture.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+<div class="hero">
+<h1>SyncroGrid</h1>
+</div>
+<div class="card">
+<h2 style="text-align:center;">Precision Planning Made Simple</h2>
+<p style="text-align:center;">
+SyncroGrid is an intelligent scheduling interface designed to simplify academic planning.
+</p>
+</div>
 </section>
 
 <section id="about">
-    <div class="card">
-        <h1>About SyncroGrid</h1>
-        <p>
-            SyncroGrid was born out of the need for a faster, cleaner, and more intuitive way to manage 
-            complex weekly schedules. Our goal is to provide a seamless user experience that turns data 
-            into a beautiful visual roadmap.
-        </p>
-        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1000&q=80" alt="Strategy" class="feature-img" style="height: 350px; margin: 20px 0;">
-        <div class="feature-grid">
-            <div>
-                <h3>Our Vision</h3>
-                <p>To become the gold standard for browser-based scheduling tools in the educational sector.</p>
-            </div>
-            <div>
-                <h3>The Tech Behind It</h3>
-                <p>SyncroGrid utilizes semantic <strong>HTML5</strong> and <strong>CSS3 Grid</strong> systems to ensure maximum compatibility and performance.</p>
-            </div>
-        </div>
-    </div>
+<div class="card">
+<h1>About SyncroGrid</h1>
+<p>A modern timetable editing and scheduling tool.</p>
+</div>
 </section>
 
 <section id="timetable">
-    <div class="card">
-        <h1>The Weekly Grid</h1>
-        <p>Your current schedule, perfectly synced.</p>
+<div class="card">
+<h1>The Weekly Grid</h1>
 
-        <div class="table-container">
-            <table>
-                <tr>
-                    <th>Day</th>
-                    <th>09:00 - 10:00</th>
-                    <th>10:00 - 11:00</th>
-                    <th>11:00 - 12:00</th>
-                    <th>12:00 - 01:00</th>
-                    <th>02:00 - 03:00</th>
-                    <th>03:00 - 04:00</th>
-                </tr>
-                <tr>
-                    <th>Monday</th>
-                    <td>Math</td>
-                    <td>Physics</td>
-                    <td>Chemistry</td>
-                    <td style="background:#f1f2f6; color:#7f8c8d; font-weight: bold;">BREAK</td>
-                    <td>English</td>
-                    <td>Lab</td>
-                </tr>
-                <tr>
-                    <th>Tuesday</th>
-                    <td>Biology</td>
-                    <td>Math</td>
-                    <td>Physics</td>
-                    <td style="background:#f1f2f6; color:#7f8c8d; font-weight: bold;">BREAK</td>
-                    <td>Chemistry</td>
-                    <td>Sports</td>
-                </tr>
-                <tr>
-                    <th>Wednesday</th>
-                    <td>English</td>
-                    <td>Math</td>
-                    <td>Lab</td>
-                    <td style="background:#f1f2f6; color:#7f8c8d; font-weight: bold;">BREAK</td>
-                    <td>Physics</td>
-                    <td>Chemistry</td>
-                </tr>
-                <tr>
-                    <th>Thursday</th>
-                    <td>Physics</td>
-                    <td>English</td>
-                    <td>Math</td>
-                    <td style="background:#f1f2f6; color:#7f8c8d; font-weight: bold;">BREAK</td>
-                    <td>Biology</td>
-                    <td>Lab</td>
-                </tr>
-                <tr>
-                    <th>Friday</th>
-                    <td>Math</td>
-                    <td>Chemistry</td>
-                    <td>Physics</td>
-                    <td style="background:#f1f2f6; color:#7f8c8d; font-weight: bold;">BREAK</td>
-                    <td>English</td>
-                    <td>Sports</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+<button id="editBtn">Edit Timetable</button>
+
+<table id="timetableTable">
+<tr>
+<th>Day</th>
+<th>09-10</th>
+<th>10-11</th>
+<th>11-12</th>
+<th>12-01</th>
+<th>02-03</th>
+<th>03-04</th>
+</tr>
+
+<tr>
+<th>Monday</th>
+<td>Math</td>
+<td>Physics</td>
+<td>Chemistry</td>
+<td style="background:#eee;font-weight:bold;">BREAK</td>
+<td>English</td>
+<td>Lab</td>
+</tr>
+
+<tr>
+<th>Tuesday</th>
+<td>Biology</td>
+<td>Math</td>
+<td>Physics</td>
+<td style="background:#eee;font-weight:bold;">BREAK</td>
+<td>Chemistry</td>
+<td>Sports</td>
+</tr>
+
+<tr>
+<th>Wednesday</th>
+<td>English</td>
+<td>Math</td>
+<td>Lab</td>
+<td style="background:#eee;font-weight:bold;">BREAK</td>
+<td>Physics</td>
+<td>Chemistry</td>
+</tr>
+
+<tr>
+<th>Thursday</th>
+<td>Physics</td>
+<td>English</td>
+<td>Math</td>
+<td style="background:#eee;font-weight:bold;">BREAK</td>
+<td>Biology</td>
+<td>Lab</td>
+</tr>
+
+<tr>
+<th>Friday</th>
+<td>Math</td>
+<td>Chemistry</td>
+<td>Physics</td>
+<td style="background:#eee;font-weight:bold;">BREAK</td>
+<td>English</td>
+<td>Sports</td>
+</tr>
+</table>
+
+</div>
 </section>
 
 <section id="contact">
-    <div class="card" style="text-align: center;">
-        <h1>Get In Touch</h1>
-        <img src="https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?auto=format&fit=crop&w=400&q=80" alt="Contact" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid #f0f2f5; margin-bottom: 20px;">
-        <p>The SyncroGrid team is here to help you optimize your schedule.</p>
-        <div style="margin-top: 20px; font-size: 1.1rem; background: #f8f9fa; padding: 20px; border-radius: 10px;">
-            <p><strong>Lead Developer:</strong> Achu Karthikeyan Madhu </p>
-            <p><strong>Project:</strong> SyncroGrid v1.0</p>
-            <p><strong>Email:</strong> <a href="mailto:support@syncrogrid.com" style="color: #3498db; text-decoration: none;">support@syncrogrid.com</a></p>
-        </div>
-    </div>
+<div class="card" style="text-align:center;">
+<h1>Contact</h1>
+<p><strong>Developer:</strong> Achu Karthikeyan Madhu</p>
+<p>Email: support@syncrogrid.com</p>
+</div>
 </section>
 
 <footer>
-    <p>&copy; 2026 <strong>SyncroGrid</strong> | Efficiently Planning the Future.</p>
+<p>© 2026 SyncroGrid</p>
 </footer>
+
+<script>
+const editBtn = document.getElementById("editBtn");
+const cells = document.querySelectorAll("#timetableTable td");
+let editing = false;
+
+editBtn.addEventListener("click", () => {
+    editing = !editing;
+    cells.forEach(cell => {
+        if(cell.innerText !== "BREAK"){
+            cell.contentEditable = editing;
+            cell.classList.toggle("editable", editing);
+        }
+    });
+    editBtn.innerText = editing ? "Save Timetable" : "Edit Timetable";
+});
+</script>
 
 </body>
 </html>
