@@ -33,6 +33,10 @@ nav{
     color:#3498db;
     text-decoration:none;
 }
+.nav-links{
+    display:flex;
+    align-items:center;
+}
 .nav-links a{
     margin-left:25px;
     text-decoration:none;
@@ -42,9 +46,8 @@ nav{
 .nav-links a:hover{color:#3498db;}
 
 /* SECTIONS */
-section{display:none;padding:60px 20px;}
-section:target{display:block;}
-#home{display:block;padding-top:0;}
+section{padding:60px 20px;}
+.hidden{display:none !important;}
 
 /* HERO */
 .hero{
@@ -70,6 +73,7 @@ section:target{display:block;}
 }
 
 /* TABLE */
+.table-wrapper{overflow-x:auto;}
 table{
     width:100%;
     border-collapse:collapse;
@@ -93,17 +97,25 @@ tr:nth-child(even){background:#f9f9f9;}
 }
 
 /* BUTTON */
-#editBtn{
-    margin-top:15px;
+button{
     padding:10px 25px;
-    background:#3498db;
-    color:white;
     border:none;
     border-radius:8px;
     font-weight:600;
     cursor:pointer;
 }
+#editBtn{background:#3498db;color:white;}
 #editBtn:hover{background:#2c80b4;}
+
+.course-box{
+    display:inline-block;
+    padding:15px 25px;
+    margin:10px;
+    background:#3498db;
+    color:white;
+    border-radius:10px;
+    font-weight:600;
+}
 
 footer{
     background:#2c3e50;
@@ -118,132 +130,172 @@ footer{
 <body>
 
 <nav>
-<a href="#home" class="logo">SyncroGrid</a>
-<div class="nav-links">
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#timetable">Timetable</a>
-<a href="#contact">Contact</a>
-</div>
+    <a href="#" class="logo">SyncroGrid</a>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#courses">My Courses</a>
+        <a href="#timetable">Timetable</a>
+        <a href="#contact">Contact</a>
+        <button onclick="logout()" style="margin-left:20px;background:#e74c3c;color:white;">Logout</button>
+    </div>
 </nav>
 
-<section id="home">
-<div class="hero">
-<h1>SyncroGrid</h1>
-</div>
-<div class="card">
-<h2 style="text-align:center;">Precision Planning Made Simple</h2>
-<p style="text-align:center;">
-SyncroGrid is an intelligent scheduling interface designed to simplify academic planning.
-</p>
-</div>
+<!-- LOGIN -->
+<section id="login">
+    <div class="card" style="max-width:400px;text-align:center;">
+        <h2>Admin Login</h2>
+        <input id="username" placeholder="Username" style="width:100%;padding:12px;margin:10px 0;">
+        <input id="password" type="password" placeholder="Password" style="width:100%;padding:12px;margin:10px 0;">
+        <button onclick="login()" style="width:100%;background:#3498db;color:white;">Login</button>
+        <p id="loginError" style="color:red;margin-top:10px;"></p>
+    </div>
 </section>
 
-<section id="about">
-<div class="card">
-<h1>About SyncroGrid</h1>
-<p>A modern timetable editing and scheduling tool.</p>
-</div>
+<!-- HOME -->
+<section id="home" class="hidden">
+    <div class="hero">
+        <h1>SyncroGrid</h1>
+    </div>
+    <div class="card">
+        <h2 style="text-align:center;">Precision Planning Made Simple</h2>
+        <p style="text-align:center;">SyncroGrid is an intelligent scheduling interface designed to simplify academic planning.</p>
+    </div>
 </section>
 
-<section id="timetable">
-<div class="card">
-<h1>The Weekly Grid</h1>
-
-<button id="editBtn">Edit Timetable</button>
-
-<table id="timetableTable">
-<tr>
-<th>Day</th>
-<th>09-10</th>
-<th>10-11</th>
-<th>11-12</th>
-<th>12-01</th>
-<th>02-03</th>
-<th>03-04</th>
-</tr>
-
-<tr>
-<th>Monday</th>
-<td>Math</td>
-<td>Physics</td>
-<td>Chemistry</td>
-<td style="background:#eee;font-weight:bold;">BREAK</td>
-<td>English</td>
-<td>Lab</td>
-</tr>
-
-<tr>
-<th>Tuesday</th>
-<td>Biology</td>
-<td>Math</td>
-<td>Physics</td>
-<td style="background:#eee;font-weight:bold;">BREAK</td>
-<td>Chemistry</td>
-<td>Sports</td>
-</tr>
-
-<tr>
-<th>Wednesday</th>
-<td>English</td>
-<td>Math</td>
-<td>Lab</td>
-<td style="background:#eee;font-weight:bold;">BREAK</td>
-<td>Physics</td>
-<td>Chemistry</td>
-</tr>
-
-<tr>
-<th>Thursday</th>
-<td>Physics</td>
-<td>English</td>
-<td>Math</td>
-<td style="background:#eee;font-weight:bold;">BREAK</td>
-<td>Biology</td>
-<td>Lab</td>
-</tr>
-
-<tr>
-<th>Friday</th>
-<td>Math</td>
-<td>Chemistry</td>
-<td>Physics</td>
-<td style="background:#eee;font-weight:bold;">BREAK</td>
-<td>English</td>
-<td>Sports</td>
-</tr>
-</table>
-
-</div>
+<!-- ABOUT -->
+<section id="about" class="hidden">
+    <div class="card">
+        <h1>About SyncroGrid</h1>
+        <p>A modern timetable editing and scheduling tool.</p>
+    </div>
 </section>
 
-<section id="contact">
-<div class="card" style="text-align:center;">
-<h1>Contact</h1>
-<p><strong>Developer:</strong> Achu Karthikeyan Madhu</p>
-<p>Email: support@syncrogrid.com</p>
-</div>
+<!-- MY COURSES -->
+<section id="courses" class="hidden">
+    <div class="card" style="text-align:center;">
+        <h1>My Courses</h1>
+        <p>Subjects currently scheduled in your timetable</p>
+        <div id="courseList"></div>
+    </div>
 </section>
 
-<footer>
-<p>© 2026 SyncroGrid</p>
+<!-- TIMETABLE -->
+<section id="timetable" class="hidden">
+    <div class="card">
+        <h1>The Weekly Grid</h1>
+        <button id="editBtn">Edit Timetable</button>
+
+        <div class="table-wrapper">
+        <table id="timetableTable">
+            <tr>
+                <th>Day</th>
+                <th>09-10</th>
+                <th>10-11</th>
+                <th>11-12</th>
+                <th>12-01</th>
+                <th>02-03</th>
+                <th>03-04</th>
+            </tr>
+            <tr>
+                <th>Monday</th>
+                <td>Math</td>
+                <td>Physics</td>
+                <td>Chemistry</td>
+                <td style="background:#eee;font-weight:bold;">BREAK</td>
+                <td>English</td>
+                <td>Lab</td>
+            </tr>
+            <tr>
+                <th>Tuesday</th>
+                <td>Biology</td>
+                <td>Math</td>
+                <td>Physics</td>
+                <td style="background:#eee;font-weight:bold;">BREAK</td>
+                <td>Chemistry</td>
+                <td>Sports</td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="hidden">
+    <div class="card" style="text-align:center;">
+        <h1>Contact</h1>
+        <p><strong>Developer:</strong> Achu Karthikeyan Madhu</p>
+        <p>Email: support@syncrogrid.com</p>
+    </div>
+</section>
+
+<footer class="hidden">
+    <p>© 2026 SyncroGrid</p>
 </footer>
 
 <script>
-const editBtn = document.getElementById("editBtn");
-const cells = document.querySelectorAll("#timetableTable td");
-let editing = false;
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "123456789";
 
-editBtn.addEventListener("click", () => {
-    editing = !editing;
-    cells.forEach(cell => {
-        if(cell.innerText !== "BREAK"){
-            cell.contentEditable = editing;
-            cell.classList.toggle("editable", editing);
+const loginSection = document.getElementById("login");
+const protectedSections = document.querySelectorAll(".hidden");
+
+/* LOGIN */
+function login(){
+    if(username.value === ADMIN_USER && password.value === ADMIN_PASS){
+        localStorage.setItem("syncroLogin","true");
+        showApp();
+    } else {
+        loginError.innerText = "Invalid username or password";
+    }
+}
+
+function showApp(){
+    loginSection.style.display="none";
+    protectedSections.forEach(s=>s.classList.remove("hidden"));
+    loadCourses();
+}
+
+function logout(){
+    localStorage.removeItem("syncroLogin");
+    location.reload();
+}
+
+/* TIMETABLE EDIT */
+const editBtn = document.getElementById("editBtn");
+let editing=false;
+
+editBtn.onclick=()=>{
+    editing=!editing;
+    document.querySelectorAll("#timetableTable td").forEach(td=>{
+        if(td.innerText!=="BREAK"){
+            td.contentEditable=editing;
+            td.classList.toggle("editable",editing);
         }
     });
-    editBtn.innerText = editing ? "Save Timetable" : "Edit Timetable";
-});
+    if(!editing) loadCourses();
+    editBtn.innerText=editing?"Save Timetable":"Edit Timetable";
+};
+
+/* LOAD COURSES FROM TIMETABLE */
+function loadCourses(){
+    const set = new Set();
+    document.querySelectorAll("#timetableTable td").forEach(td=>{
+        const text = td.innerText.trim();
+        if(text && text!=="BREAK") set.add(text);
+    });
+    courseList.innerHTML="";
+    set.forEach(c=>{
+        courseList.innerHTML += `<div class="course-box">${c}</div>`;
+    });
+}
+
+/* ON LOAD */
+window.onload=()=>{
+    if(localStorage.getItem("syncroLogin")==="true"){
+        showApp();
+    }
+};
 </script>
 
 </body>
